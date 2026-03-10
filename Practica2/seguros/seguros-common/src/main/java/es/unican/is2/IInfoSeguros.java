@@ -1,4 +1,4 @@
-
+package es.unican.is2;
 
 /**
  * Interfaz con metodos de consulta de informacion

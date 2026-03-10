@@ -1,3 +1,5 @@
+package es.unican.is2;
+
 import java.util.LinkedList;
 import java.util.List;
 
