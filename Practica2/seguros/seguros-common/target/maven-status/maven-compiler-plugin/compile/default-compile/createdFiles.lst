@@ -1,0 +1,10 @@
+DataAccessException.class
+IGestionSeguros.class
+IGestionClientes.class
+Seguro.class
+ISegurosDAO.class
+Cliente.class
+IInfoSeguros.class
+OperacionNoValida.class
+IClientesDAO.class
+Cobertura.class
