@@ -1,6 +1,5 @@
-H2ServerConnectionManager.class
-SegurosDAO.class
-ClienteMapper.class
-es\unican\is2\Main.class
-SeguroMapper.class
-ClientesDAO.class
+es\unican\is2\SegurosDAO.class
+es\unican\is2\H2ServerConnectionManager.class
+es\unican\is2\ClientesDAO.class
+es\unican\is2\ClienteMapper.class
+es\unican\is2\SeguroMapper.class
