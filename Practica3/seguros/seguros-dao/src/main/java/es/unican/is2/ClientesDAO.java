@@ -26,8 +26,10 @@ public class ClientesDAO implements IClientesDAO {
 	public Cliente cliente(String dni) throws DataAccessException {
 		Cliente result = null; 
 		Connection con = H2ServerConnectionManager.getConnection();
+		Statement statement = null;
+		
 		try {
-			Statement statement = con.createStatement();
+			statement = con.createStatement();
 			String statementText = "select * from Clientes where dni = '"+ dni+"'";
 			ResultSet results = statement.executeQuery(statementText);
 			if (results.next()) { 
@@ -38,7 +40,16 @@ public class ClientesDAO implements IClientesDAO {
 		catch (SQLException e) {
 			e.printStackTrace();
 			throw new DataAccessException();
-		}
+		} finally {
+        	if (statement != null) {
+            	try {
+            	    statement.close();
+        	    } catch (SQLException e) {
+            	    e.printStackTrace();
+            	}
+        	}
+    	}
+
 		return result;
 	}
 
@@ -80,9 +91,10 @@ public class ClientesDAO implements IClientesDAO {
 	public List<Cliente> clientes() throws DataAccessException {
 		List<Cliente> clientes = new LinkedList<Cliente>();
 		Connection con = H2ServerConnectionManager.getConnection(); 
+		Statement statement = null;
 		try {
-			Statement statement = con.createStatement(); 
-			String statementText = "select * from Clientes"; 
+			statement = con.createStatement(); 
+			String statementText = "select Customers.name, Orders.id, Orders.price from Clientes"; 
 			ResultSet results = statement.executeQuery(statementText); 
 			// Procesamos cada fila como vehiculo independiente
 			while (results.next()) {
@@ -92,6 +104,14 @@ public class ClientesDAO implements IClientesDAO {
 		} catch (SQLException e) {
 			// System.out.println(e);
 			throw new DataAccessException();
+		} finally {
+        	if (statement != null) {
+            	try {
+            	    statement.close();
+        	    } catch (SQLException e) {
+            	    e.printStackTrace();
+            	}
+        	}
 		}
 
 		return clientes;
@@ -99,14 +119,26 @@ public class ClientesDAO implements IClientesDAO {
 
 	private Cliente procesaCliente(Connection con, ResultSet results) throws SQLException, DataAccessException {
 		Cliente result = ClienteMapper.toCliente(results);
+		Statement statement = null;
 		// Cargamos los seguros del cliente
-		Statement statement = con.createStatement();
-		String statementText = String.format("select * from Seguros where cliente_FK = '%s'", result.getDni());
-		results = statement.executeQuery(statementText);
-		while (results.next()) {
-			result.getSeguros().add(SeguroMapper.toSeguro(results));
+		try {
+			statement = con.createStatement();
+			String statementText = String.format("select * from Seguros where cliente_FK = '%s'", result.getDni());
+			results = statement.executeQuery(statementText);
+			while (results.next()) {
+				result.getSeguros().add(SeguroMapper.toSeguro(results));
+			}
+		} finally {
+
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
 		}
-		statement.close();
 		return result;
 	}
 	

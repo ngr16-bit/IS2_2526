@@ -11,6 +11,8 @@ import java.sql.SQLException;
  */
 public class ClienteMapper {
 
+	private ClienteMapper() {}
+
 	/**
 	 * Recibe una fila de la BBDD correspondinete a un Cliente 
 	 * y devuelve un objeto Cliente con los datos correspondientes

@@ -1,0 +1,6 @@
+projectKey=es.unican.is2:segurosInicial
+serverUrl=http://localhost:9000
+serverVersion=26.3.0.120487
+dashboardUrl=http://localhost:9000/dashboard?id=es.unican.is2%3AsegurosInicial
+ceTaskId=4971ebca-e76b-4924-ac11-0a97ce355e6b
+ceTaskUrl=http://localhost:9000/api/ce/task?id=4971ebca-e76b-4924-ac11-0a97ce355e6b

@@ -45,11 +45,12 @@ public class H2ServerConnectionManager {
 	 * @throws DataAccessException Si hay un fallo en la conexion
 	 */
 	public static void cargaDatos() throws DataAccessException {
+		Statement stm = null;
 		try {
 			Connection con = getConnection();
 			
 			// Creacion programatica de la BBDD
-			Statement stm = con.createStatement(); 
+			stm = con.createStatement(); 
 			
 			// Creacion de la tabla Clientes
 			String sql= "CREATE TABLE Clientes (dni CHAR(9) NOT NULL, nombre VARCHAR(100) NOT NULL, "
@@ -103,7 +104,15 @@ public class H2ServerConnectionManager {
 			System.out.println(e);
 			throw new DataAccessException();
 			
-		} 		
+		} finally {
+			if (stm != null) {
+				try {
+					stm.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	/**
@@ -118,14 +127,23 @@ public class H2ServerConnectionManager {
 	 * @throws DataAccessException si hay un error en la conexion
 	 */
 	public static void executeSqlStatement(String stringStatement) throws DataAccessException {
-		Connection con = getConnection(); 
+		Connection con = getConnection();
+		Statement stm = null; 
 		try {
-			Statement stm = con.createStatement(); 
+			stm = con.createStatement(); 
 			stm.execute(stringStatement); 
 			stm.close(); 
 		}
 		catch (SQLException e) {
 			throw new DataAccessException(); 
+		} finally {
+			if (stm != null) {
+				try {
+					stm.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
